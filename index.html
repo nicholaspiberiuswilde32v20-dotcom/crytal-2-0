@@ -9,7 +9,7 @@
   --orange:#f47721;
   --dark:#252525;
   --bg:#f5f6f8;
-  --muted:#777;
+  --mute:#777;
   --border:#e8e8e8;
   --green:#159b62;
 }
@@ -281,7 +281,7 @@ let currentOrder=null;
  container.innerHTML = games.map(g => `
   <div class="game ${g[2] ? "available" : ""}"
        data-name="${g[0].toLowerCase()}">
-   <div class="game-icon">${g[1]}</div>
+   <div class="game-icon">${g[0].includes("Mobile Legends") ? '<img src="images/game-icons/Screenshot_20261109-172054.jpg" alt="Mobile Legends" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">' : g[1]}</div>
    <div class="game-info">
     <strong>${g[0]}</strong>
     <span class="status ${g[2] ? "available" : ""}">
