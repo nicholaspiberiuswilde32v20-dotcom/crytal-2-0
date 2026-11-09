@@ -1,0 +1,398 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CRYTAL 2.0 | Top Up • Play More</title>
+<style>
+:root {
+  --orange:#f47721;
+  --dark:#252525;
+  --bg:#f5f6f8;
+  --muted:#777;
+  --border:#e8e8e8;
+  --green:#159b62;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--dark)}
+button,input,select{font:inherit}
+button{cursor:pointer}
+header{background:white;position:sticky;top:0;z-index:10;border-bottom:1px solid var(--border)}
+.nav{max-width:1150px;margin:auto;display:flex;align-items:center;gap:14px;padding:14px}
+.menu{border:0;background:none;font-size:25px}
+.brand{font-weight:900;font-size:21px;white-space:nowrap}
+.brand span{color:var(--orange)}
+.search{margin-left:auto;width:260px;max-width:35%;padding:11px;border:1px solid var(--border);border-radius:8px}
+.language{padding:10px;border:1px solid var(--border);border-radius:8px;background:white}
+main{max-width:1150px;margin:auto;padding:20px 15px 40px}
+.banner{background:linear-gradient(110deg,#f47721,#ff9d49);color:white;border-radius:13px;padding:30px;min-height:175px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.banner h1{font-size:clamp(25px,5vw,38px);margin-bottom:10px}
+.banner p{line-height:1.5}
+.banner-icon{font-size:70px}
+.dots{text-align:center;margin:10px 0 20px}
+.dot{display:inline-block;width:8px;height:8px;background:#ccc;border-radius:50%;margin:0 3px}
+.dot.active{background:var(--orange)}
+.notice{background:#fff5e9;color:#87501d;border:1px solid #ffdfbd;padding:13px;border-radius:8px;font-size:13px;line-height:1.5;margin-bottom:24px}
+.heading{display:flex;justify-content:space-between;align-items:center;margin:23px 0 14px}
+.heading h2{font-size:21px}
+.heading small{color:var(--muted)}
+.games{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.game{background:white;border:1px solid var(--border);border-radius:11px;padding:13px;display:flex;align-items:center;gap:11px;min-width:0}
+.game.available{cursor:pointer}
+.game.available:hover{border-color:var(--orange);transform:translateY(-2px)}
+.game-icon{width:53px;height:53px;flex-shrink:0;border-radius:9px;background:#fff0e5;display:grid;place-items:center;font-size:25px}
+.game-info{min-width:0}
+.game-info strong{font-size:13px;line-height:1.35;display:block;margin-bottom:6px}
+.status{font-size:10px;background:#eee;color:#666;border-radius:5px;padding:4px 6px;display:inline-block}
+.status.available{background:#e5f7ed;color:var(--green)}
+.page{display:none}
+.page.active{display:block}
+.panel{background:white;border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:17px}
+.panel h2{font-size:21px;margin-bottom:15px}
+.panel p{font-size:14px;line-height:1.7;color:#555}
+.back{border:0;background:none;color:var(--orange);font-weight:bold;margin-bottom:17px}
+.group{margin:15px 0}
+.group label{display:block;font-size:13px;font-weight:bold;margin-bottom:7px}
+.group input,.group select{width:100%;padding:12px;border:1px solid #ddd;border-radius:7px;background:white}
+.packages{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.package{background:white;border:1px solid #ddd;border-radius:8px;padding:13px 8px;text-align:left}
+.package.selected{border:2px solid var(--orange);background:#fff7f0}
+.package strong,.package span{display:block}
+.package strong{font-size:13px;margin-bottom:6px}
+.package span{font-size:13px;color:var(--orange);font-weight:bold}
+.primary{width:100%;padding:13px;background:var(--orange);color:white;border:0;border-radius:8px;font-weight:bold;margin-top:12px}
+.primary:hover{background:#df6415}
+.secondary{padding:10px 15px;border:1px solid #ddd;border-radius:7px;background:white}
+.line{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);font-size:14px}
+.line.total{font-size:17px;font-weight:bold}
+.transaction{padding:14px 0;border-bottom:1px solid var(--border)}
+.transaction strong{display:block;margin-bottom:5px}
+.transaction small{color:var(--muted);line-height:1.6}
+.demo{display:inline-block;background:#fff0df;color:#945018;padding:5px 8px;border-radius:5px;font-size:11px;margin-top:7px}
+footer{background:white;border-top:1px solid var(--border);padding:30px 17px;text-align:center}
+.footer-brand{font-size:29px;font-weight:900;margin-bottom:9px}
+.footer-brand span{color:var(--orange)}
+footer p{font-size:13px;color:#777;line-height:1.7}
+.footer-links{display:flex;justify-content:center;flex-wrap:wrap;gap:16px;margin:18px 0}
+.footer-links button{border:0;background:none;color:#555;font-size:13px}
+.drawer-bg{display:none;position:fixed;inset:0;background:#0007;z-index:30}
+.drawer{background:white;width:min(300px,85vw);height:100%;padding:22px;overflow:auto}
+.drawer-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.drawer button.item{display:block;width:100%;text-align:left;padding:14px 5px;border:0;border-bottom:1px solid var(--border);background:white;font-size:14px}
+.drawer button.item:hover{color:var(--orange)}
+.close{border:0;background:none;font-size:25px}
+#chat{position:fixed;bottom:18px;right:18px;z-index:15;border:0;background:var(--orange);color:white;border-radius:50%;width:54px;height:54px;font-size:23px;box-shadow:0 3px 12px #0003}
+#chatbox{display:none;position:fixed;bottom:82px;right:15px;width:min(320px,90vw);background:white;border:1px solid var(--border);border-radius:12px;padding:17px;z-index:15;box-shadow:0 4px 18px #0002}
+#chatbox button{display:block;width:100%;padding:10px;text-align:left;border:1px solid var(--border);background:white;border-radius:7px;margin-top:8px;font-size:13px}
+@media(max-width:800px){.games{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){
+ .nav{gap:9px;padding:12px 10px}
+ .brand{font-size:17px}
+ .search{width:100px;min-width:0;font-size:12px;padding:10px}
+ .language{font-size:11px;padding:9px 5px}
+ main{padding:14px 11px 30px}
+ .banner{padding:22px;min-height:150px}
+ .banner-icon{font-size:45px}
+ .games{gap:9px}
+ .game{padding:9px;gap:8px}
+ .game-icon{width:43px;height:43px;font-size:21px}
+ .game-info strong{font-size:11px}
+ .packages{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="nav">
+  <button class="menu" onclick="toggleDrawer(true)">☰</button>
+  <div class="brand">CRYTAL <span>2.0</span></div>
+  <input class="search" id="search" placeholder="Search games..." oninput="searchGames()">
+  <div class="language">🇵🇭 EN</div>
+ </div>
+</header>
+
+<main>
+<section id="home" class="page active">
+ <div class="banner">
+  <div>
+   <h1 id="bannerTitle">TOP UP. PLAY MORE.</h1>
+   <p id="bannerText">Your gaming top-up destination. Welcome to CRYTAL 2.0!</p>
+  </div>
+  <div class="banner-icon">💎</div>
+ </div>
+ <div class="dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+
+ <div class="notice">⚠️ <b>Important:</b> This is a website demo. Orders, payments, and transactions are simulated. No real diamonds or game credits will be delivered.</div>
+
+ <div class="heading"><h2>Popular Games</h2><small>Choose your game</small></div>
+ <div class="games" id="games"></div>
+</section>
+
+<section id="topup" class="page">
+ <button class="back" onclick="showPage('home')">← Back to games</button>
+ <div class="panel">
+  <h2>Mobile Legends: Bang Bang</h2>
+  <p>Select your package and enter your game account details below.</p>
+  <div class="group"><label>MLBB User ID</label><input id="userId" placeholder="Enter User ID" inputmode="numeric"></div>
+  <div class="group"><label>Zone ID</label><input id="zoneId" placeholder="Enter Zone ID" inputmode="numeric"></div>
+  <div class="group"><label>Email Address</label><input id="email" type="email" placeholder="Enter your email"></div>
+ </div>
+ <div class="panel">
+  <h2>Select Package</h2>
+  <div class="packages" id="packages"></div>
+ </div>
+ <div class="panel">
+  <h2>Payment Method (Demo)</h2>
+  <div class="group">
+   <label>Choose payment method</label>
+   <select id="payment">
+    <option value="GCash">GCash (Demo)</option>
+    <option value="Maya">Maya (Demo)</option>
+   </select>
+  </div>
+  <button class="primary" onclick="reviewOrder()">Review Order</button>
+ </div>
+</section>
+
+<section id="review" class="page">
+ <button class="back" onclick="showPage('topup')">← Back</button>
+ <div class="panel">
+  <h2>Review Your Order</h2>
+  <div id="reviewDetails"></div>
+  <p style="margin-top:14px">This is a demo checkout. No real payment will be collected.</p>
+  <button class="primary" onclick="placeOrder()">Confirm Demo Order</button>
+ </div>
+</section>
+
+<section id="result" class="page">
+ <div class="panel">
+  <h2>Demo Order Created!</h2>
+  <p>Your demo order has been saved on this browser. No payment was made and no game credits will be delivered.</p>
+  <div id="resultDetails" style="margin-top:15px"></div>
+  <button class="primary" onclick="showPage('transactions')">View My Transactions</button>
+  <button class="secondary" style="width:100%;margin-top:10px" onclick="showPage('home')">Return Home</button>
+ </div>
+</section>
+
+<section id="transactions" class="page">
+ <button class="back" onclick="showPage('home')">← Home</button>
+ <div class="panel">
+  <h2>My Transactions</h2>
+  <p>Demo orders saved on this browser are listed below.</p>
+  <div id="transactionList" style="margin-top:15px"></div>
+ </div>
+</section>
+
+<section id="information" class="page">
+ <button class="back" onclick="showPage('home')">← Home</button>
+ <div class="panel">
+  <h2 id="infoTitle">Information</h2>
+  <div id="infoContent"></div>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="footer-brand">CRYTAL <span>2.0</span></div>
+ <p>TOP UP • PLAY MORE</p>
+ <p>Your gaming top-up destination.</p>
+ <div class="footer-links">
+  <button onclick="info('About Us')">About Us</button>
+  <button onclick="info('FAQ')">FAQ</button>
+  <button onclick="info('Customer Support')">Customer Support</button>
+  <button onclick="info('Terms & Conditions')">Terms</button>
+  <button onclick="info('Privacy Policy')">Privacy</button>
+  <button onclick="showPage('transactions')">My Transactions</button>
+  <button onclick="info('Settings')">Settings</button>
+ </div>
+ <p>© 2026 CRYTAL 2.0. All rights reserved.</p>
+ <p>Demo website — no real payment processing.</p>
+ <button class="secondary" style="margin-top:15px" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Back to Top</button>
+</footer>
+
+<div class="drawer-bg" id="drawer" onclick="if(event.target===this)toggleDrawer(false)">
+ <div class="drawer">
+  <div class="drawer-top"><div class="brand">CRYTAL <span>2.0</span></div><button class="close" onclick="toggleDrawer(false)">×</button></div>
+  <button class="item" onclick="go('home')">⌂ Home</button>
+  <button class="item" onclick="go('transactions')">▤ My Transactions</button>
+  <button class="item" onclick="goInfo('FAQ')">? FAQ</button>
+  <button class="item" onclick="goInfo('Customer Support')">✉ Customer Support</button>
+  <button class="item" onclick="goInfo('Services')">◇ Services</button>
+  <button class="item" onclick="goInfo('About Us')">ⓘ About Us</button>
+  <button class="item" onclick="goInfo('Terms & Conditions')">▣ Terms & Conditions</button>
+  <button class="item" onclick="goInfo('Privacy Policy')">▤ Privacy Policy</button>
+  <button class="item" onclick="goInfo('Settings')">⚙ Settings</button>
+ </div>
+</div>
+
+<button id="chat" onclick="toggleChat()">?</button>
+<div id="chatbox">
+ <b>CRYTAL Help Center</b>
+ <p style="font-size:12px;color:#777;margin-top:6px">How can we help?</p>
+ <button onclick="info('Where is my order?')">Where is my order?</button>
+ <button onclick="info('Payment problem')">Payment problem</button>
+ <button onclick="info('Diamonds haven’t arrived')">Diamonds haven't arrived</button>
+ <button onclick="info('Refund policy')">Refund policy</button>
+ <button onclick="info('Customer Support')">Talk to support</button>
+ <button onclick="toggleChat()">Close</button>
+</div>
+
+<script>
+const games=[
+["Mobile Legends: Bang Bang","🎮",true],
+["VALORANT","🔫",false],
+["Steam","🖥️",false],
+["Garena Shells","🐉",false],
+["Call of Duty: Mobile","🎯",false],
+["Genshin Impact","🌌",false],
+["Arena Breakout","🪖",false],
+["Free Fire","🔥",false],
+["Counter-Strike 2","💣",false],
+["League of Legends","⚔️",false],
+["League of Legends: Wild Rift","🛡️",false],
+["MLBB Adventure","✨",false],
+["Minecraft","⛏️",false],
+["Honkai Impact 3rd","🌠",false],
+["Roblox","🧱",false],
+["Honor of Kings","👑",false],
+["PUBG Mobile","🪂",false],
+["Honkai: Star Rail","🚄",false]
+];
+
+const packages=[
+["112 Diamonds",110],
+["223 Diamonds",220],
+["336 Diamonds",330],
+["570 Diamonds",550],
+["1,163 Diamonds",1100],
+["6,042 Diamonds",5500],
+["Weekly Diamond Pass",120],
+["Weekly Elite Pass",60],
+["Monthly Epic Bundle",280]
+];
+
+let selected=0;
+let currentOrder=null;
+
+function renderGames(){
+ const container=document.getElementById("games");
+ container.innerHTML=games.map((g,i)=>`
+ <div class="game ${g[2]?'available':''}" data-name="${g[0].toLowerCase()}" onclick="${g[2]?'showPage(\\'topup\\')':'comingSoon()'}">
+  <div class="game-icon">${g[1]}</div>
+  <div class="game-info"><strong>${g[0]}</strong>
+  <span class="status ${g[2]?'available':''}">${g[2]?'Available':'Coming Soon'}</span></div>
+ </div>`).join("");
+}
+function searchGames(){
+ const q=document.getElementById("search").value.toLowerCase();
+ document.querySelectorAll(".game").forEach(card=>{
+  card.style.display=card.dataset.name.includes(q)?"flex":"none";
+ });
+}
+function renderPackages(){
+ document.getElementById("packages").innerHTML=packages.map((p,i)=>`
+ <button class="package ${i===selected?'selected':''}" onclick="selectPackage(${i})">
+ <strong>${p[0]}</strong><span>₱${p[1].toLocaleString("en-PH")}</span></button>`).join("");
+}
+function selectPackage(i){selected=i;renderPackages()}
+function showPage(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ if(id==="transactions")renderTransactions();
+ window.scrollTo(0,0);
+}
+function toggleDrawer(open){document.getElementById("drawer").style.display=open?"block":"none"}
+function go(id){toggleDrawer(false);showPage(id)}
+function goInfo(title){toggleDrawer(false);info(title)}
+function comingSoon(){alert("This game is coming soon to CRYTAL 2.0!")}
+function info(title){
+ const content={
+ "About Us":"CRYTAL 2.0 is a gaming top-up website demo. Our goal is to create a simple and convenient experience for gamers.",
+ "FAQ":"This is a demo website. Orders are simulated and no real game credits are delivered.",
+ "Customer Support":"Customer support channels will be announced when the official service launches. Never share your game password or OTP.",
+ "Services":"Game top-up services are planned. Mobile Legends is shown as a demo catalog item.",
+ "Terms & Conditions":"Always check your Player ID and Zone ID carefully. Real services, payment processing, and delivery are not active in this demo.",
+ "Privacy Policy":"This demo stores order details in your browser's local storage. Avoid entering real personal or payment information.",
+ "Settings":"CRYTAL 2.0 Demo Settings. Transaction history is saved in this browser only.",
+ "Where is my order?":"This demo does not process real orders. Demo orders appear under My Transactions.",
+ "Payment problem":"No real payments are accepted in this demo.",
+ "Diamonds haven’t arrived":"No diamonds are delivered by this demo.",
+ "Refund policy":"No real payments are taken in this demo, so no real refunds can be processed."
+ };
+ document.getElementById("infoTitle").textContent=title;
+ document.getElementById("infoContent").innerHTML="<p>"+(content[title]||"More information will be available soon.")+"</p>";
+ showPage("information");
+}
+function reviewOrder(){
+ const user=document.getElementById("userId").value.trim();
+ const zone=document.getElementById("zoneId").value.trim();
+ const email=document.getElementById("email").value.trim();
+ if(!user||!zone||!email){alert("Please enter your User ID, Zone ID, and email.");return}
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alert("Please enter a valid email address.");return}
+ currentOrder={user,zone,email,item:packages[selected][0],price:packages[selected][1],payment:document.getElementById("payment").value};
+ document.getElementById("reviewDetails").innerHTML=`
+ <div class="line"><span>Game</span><b>Mobile Legends</b></div>
+ <div class="line"><span>Package</span><b>${currentOrder.item}</b></div>
+ <div class="line"><span>User ID</span><b>${safe(user)}</b></div>
+ <div class="line"><span>Zone ID</span><b>${safe(zone)}</b></div>
+ <div class="line"><span>Email</span><b>${safe(email)}</b></div>
+ <div class="line"><span>Payment</span><b>${currentOrder.payment} (Demo)</b></div>
+ <div class="line total"><span>Total</span><b>₱${currentOrder.price.toLocaleString("en-PH")}</b></div>`;
+ showPage("review");
+}
+function safe(s){
+ const d=document.createElement("div");d.textContent=s;return d.innerHTML;
+}
+function placeOrder(){
+ const order={
+ number:"CRY"+Date.now().toString().slice(-9),
+ ...currentOrder,
+ status:"Demo Order — Not Paid",
+ date:new Date().toLocaleString()
+ };
+ let list=JSON.parse(localStorage.getItem("crytalOrders")||"[]");
+ list.unshift(order);
+ localStorage.setItem("crytalOrders",JSON.stringify(list));
+ document.getElementById("resultDetails").innerHTML=`
+ <div class="line"><span>Order Number</span><b>${order.number}</b></div>
+ <div class="line"><span>Package</span><b>${safe(order.item)}</b></div>
+ <div class="line"><span>Amount</span><b>₱${order.price.toLocaleString("en-PH")}</b></div>
+ <div class="line"><span>Payment</span><b>${order.payment} Demo</b></div>
+ <span class="demo">DEMO — NOT PAID</span>`;
+ showPage("result");
+}
+function renderTransactions(){
+ const list=JSON.parse(localStorage.getItem("crytalOrders")||"[]");
+ const el=document.getElementById("transactionList");
+ if(!list.length){el.innerHTML="<p>No demo transactions yet.</p>";return}
+ el.innerHTML=list.map(o=>`
+ <div class="transaction">
+ <strong>${safe(o.item)} — ₱${o.price.toLocaleString("en-PH")}</strong>
+ <small>Order: ${safe(o.number)}<br>User ID: ${safe(o.user)}<br>Zone ID: ${safe(o.zone)}<br>${safe(o.date)}</small><br>
+ <span class="demo">${safe(o.status)}</span>
+ </div>`).join("");
+}
+function toggleChat(){
+ const el=document.getElementById("chatbox");
+ el.style.display=el.style.display==="block"?"none":"block";
+}
+const banners=[
+["TOP UP. PLAY MORE.","Your gaming top-up destination. Welcome to CRYTAL 2.0!"],
+["LEVEL UP YOUR GAME!","A new home for your gaming top-up needs."],
+["WELCOME TO CRYTAL 2.0","Explore our game catalog and discover what's coming next."]
+];
+let bannerIndex=0;
+setInterval(()=>{
+ bannerIndex=(bannerIndex+1)%banners.length;
+ document.getElementById("bannerTitle").textContent=banners[bannerIndex][0];
+ document.getElementById("bannerText").textContent=banners[bannerIndex][1];
+ document.querySelectorAll(".dot").forEach((d,i)=>d.classList.toggle("active",i===bannerIndex));
+},4000);
+renderGames();
+renderPackages();
+</script>
+</body>
+    </html>
+    
