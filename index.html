@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -275,16 +274,33 @@ const packages=[
 
 let selected=0;
 let currentOrder=null;
+  
+  function renderGames(){
+ const container = document.getElementById("games");
 
-function renderGames(){
- const container=document.getElementById("games");
- container.innerHTML=games.map((g,i)=>`
- <div class="game ${g[2]?'available':''}" data-name="${g[0].toLowerCase()}" onclick="${g[2]?'showPage(\\'topup\\')':'comingSoon()'}">
-  <div class="game-icon">${g[1]}</div>
-  <div class="game-info"><strong>${g[0]}</strong>
-  <span class="status ${g[2]?'available':''}">${g[2]?'Available':'Coming Soon'}</span></div>
- </div>`).join("");
-}
+ container.innerHTML = games.map(g => `
+  <div class="game ${g[2] ? "available" : ""}"
+       data-name="${g[0].toLowerCase()}">
+   <div class="game-icon">${g[1]}</div>
+   <div class="game-info">
+    <strong>${g[0]}</strong>
+    <span class="status ${g[2] ? "available" : ""}">
+     ${g[2] ? "Available" : "Coming Soon"}
+    </span>
+   </div>
+  </div>
+ `).join("");
+
+ container.querySelectorAll(".game").forEach((card, i) => {
+  card.addEventListener("click", () => {
+   if (games[i][2]) {
+    showPage("topup");
+   } else {
+    comingSoon();
+   }
+  });
+ });
+  }
 function searchGames(){
  const q=document.getElementById("search").value.toLowerCase();
  document.querySelectorAll(".game").forEach(card=>{
